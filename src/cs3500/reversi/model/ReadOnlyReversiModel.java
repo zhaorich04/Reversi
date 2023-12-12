@@ -70,4 +70,6 @@ public interface ReadOnlyReversiModel {
   public Map<CellCoordinate, Cell> getGameBoard();
 
   boolean getIsBlacksTurn();
+
+  int countFlippedDiscs(Cell cell);
 }

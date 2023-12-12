@@ -23,4 +23,9 @@ public class ReversiViewFeatures implements ViewFeatures {
   public void handlePass() {
     player.passSelected();
   }
+
+  @Override
+  public void handleHint() {
+    player.hintsEnabled();
+  }
 }

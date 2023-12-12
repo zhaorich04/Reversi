@@ -38,5 +38,10 @@ public class HumanPlayer implements Player {
     return isBlackPlayer;
   }
 
+  @Override
+  public void hintsEnabled() {
+    controller.handleHint();
+  }
+
 
 }

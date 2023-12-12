@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.util.List;
 import java.util.Objects;
 
 import javax.swing.JPanel;
@@ -19,9 +20,11 @@ import javax.swing.AbstractAction;
 
 import javax.swing.event.MouseInputAdapter;
 
+import cs3500.reversi.model.Cell;
 import cs3500.reversi.model.CellCoordinate;
 import cs3500.reversi.model.Disk;
 import cs3500.reversi.model.ReadOnlyReversiModel;
+import cs3500.reversi.strategy.MaxCaptureStrategy;
 
 /**
  * Represents a panel in the gema of reversi.
@@ -41,6 +44,8 @@ public class ReversiPanel extends JPanel {
   // If not set, the highlighted cell will start at (0,0).
   private int selectedR = 1000;
 
+  private boolean hintsEnabled;
+
 
 
 
@@ -52,6 +57,7 @@ public class ReversiPanel extends JPanel {
   public ReversiPanel(ReadOnlyReversiModel model) {
     super();
     this.model = model;
+    this.hintsEnabled = false;
 
     addMouseListener(new MouseEventsListener());
     setFocusable(true);
@@ -63,6 +69,8 @@ public class ReversiPanel extends JPanel {
     getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW)).
             put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "pressed");
     getActionMap().put("pressed", new KeyEventsListener());
+    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW)).
+            put(KeyStroke.getKeyStroke(KeyEvent.VK_H, 0), "pressed");
 
   }
 
@@ -100,6 +108,15 @@ public class ReversiPanel extends JPanel {
         g2d.drawPolygon(xCorners, yCorners, 6);
 
         if (q == selectedQ && r == selectedR) {
+          if (hintsEnabled) {
+                int flippedDiscs = model.countFlippedDiscs(model.getCell(new CellCoordinate(q,r)));
+                g2d.setColor(Color.BLACK); // Change color as needed
+
+                System.out.println(flippedDiscs);
+                g2d.drawString(String.valueOf(flippedDiscs),
+                        (int) pixelCenter.getX(), (int) pixelCenter.getY());
+              }
+
           g2d.setColor(Color.cyan);
           g2d.fillPolygon(xCorners, yCorners, 6);
         } else {
@@ -200,6 +217,10 @@ public class ReversiPanel extends JPanel {
       if (Objects.equals(e.getActionCommand(), "\n")) {
         this.handleMove();
       }
+
+      if (e.getActionCommand().equals("H") || e.getActionCommand().equals("h")) {
+        this.handleHint();
+      }
     }
 
 
@@ -217,10 +238,22 @@ public class ReversiPanel extends JPanel {
         vf.handlePass();
       }
     }
+
+    private void handleHint() {
+      enableHint();
+      if (vf != null) {
+        System.out.println("hints enabled");
+        vf.handleHint();
+      }
+    }
   }
 
   public void setViewListener(ViewListeners listener) {
     this.vl = listener;
+  }
+
+  public void enableHint() {
+    this.hintsEnabled = true;
   }
 }
 

@@ -16,4 +16,5 @@ public interface Player {
 
   boolean getIsBlackPlayer();
 
+  void hintsEnabled();
 }

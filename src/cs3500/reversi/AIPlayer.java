@@ -49,4 +49,9 @@ public class AIPlayer implements Player {
   public boolean getIsBlackPlayer() {
     return isBlackPlayer;
   }
+
+  @Override
+  public void hintsEnabled() {
+    controller.handleHint();
+  }
 }

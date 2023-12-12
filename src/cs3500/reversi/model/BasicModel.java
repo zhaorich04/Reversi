@@ -398,6 +398,27 @@ public class BasicModel implements ReversiModel, ModelFeatures {
     return isBlacksTurn;
   }
 
+  @Override
+  public int countFlippedDiscs(Cell cell) {
+    int startingScore = this.getWhiteScore();
+    BasicModel modelCopy  = new BasicModel(this.copyBoard());
+
+    if (modelCopy.isMoveLegal(cell)) {
+      modelCopy.makeMove(cell);
+    }
+
+    int newScore = startingScore;
+
+    if (isBlacksTurn) {
+      newScore = modelCopy.getBlackScore();
+    }
+    else {
+      newScore = modelCopy.getWhiteScore();
+    }
+
+    return Math.abs(startingScore - newScore);
+  }
+
 
   /**
    * Flips its neighboring cells given a cell.

@@ -10,6 +10,7 @@ import cs3500.reversi.strategy.AvoidNeighborCornerStrategy;
 import cs3500.reversi.strategy.CaptureCornersStrategy;
 import cs3500.reversi.strategy.MaxCaptureStrategy;
 import cs3500.reversi.view.ReversiGraphicsView;
+import cs3500.reversi.view.ReversiHint;
 import cs3500.reversi.view.ReversiView;
 
 /**
@@ -71,9 +72,11 @@ public class ReversiRunner {
 
     ReversiView viewPlayer1 = new ReversiGraphicsView(model, player1);
     ReversiView viewPlayer2 = new ReversiGraphicsView(model, player2);
+    ReversiHint reversiHint = new ReversiHint(model);
+    reversiHint.enableHints(true);
 
-    Controller controller1 = new Controller(model, player1, viewPlayer2);
-    Controller controller2 = new Controller(model, player2, viewPlayer1);
+    Controller controller1 = new Controller(model, player1, reversiHint);
+    Controller controller2 = new Controller(model, player2, reversiHint);
 
     assert player1 != null;
     player1.addController(controller1);

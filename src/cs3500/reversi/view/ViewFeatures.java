@@ -11,4 +11,5 @@ public interface ViewFeatures {
 
   public void handlePass();
 
+  void handleHint();
 }

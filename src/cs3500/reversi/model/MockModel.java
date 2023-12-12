@@ -131,6 +131,11 @@ public class MockModel implements ReversiModel {
     return false;
   }
 
+  @Override
+  public int countFlippedDiscs(Cell cell) {
+    return 0;
+  }
+
   /**
    * Starts the game with the initial board state using an axial coordinate system.
    */

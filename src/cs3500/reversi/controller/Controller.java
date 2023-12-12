@@ -60,4 +60,9 @@ public class Controller implements ReversiController, ViewFeatures, ModelListene
 
     }
   }
+
+  @Override
+  public void handleHint() {
+    view.repaintView();
+  }
 }
