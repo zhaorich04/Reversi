@@ -6,6 +6,8 @@ import cs3500.reversi.model.BasicModel;
 import cs3500.reversi.model.Cell;
 import cs3500.reversi.model.CellCoordinate;
 import cs3500.reversi.model.ReversiModel;
+import cs3500.reversi.strategy.AvoidNeighborCornerStrategy;
+import cs3500.reversi.strategy.CaptureCornersStrategy;
 import cs3500.reversi.strategy.MaxCaptureStrategy;
 import cs3500.reversi.view.ReversiGraphicsView;
 import cs3500.reversi.view.ReversiView;
@@ -21,8 +23,51 @@ public class ReversiRunner {
   public static void main(String[] args) {
     ReversiModel model = new BasicModel(4);
 
-    Player player1 = new HumanPlayer(true);
-    Player player2 = new AIPlayer(model, new MaxCaptureStrategy(), false);
+    Player player1 = null;
+    Player player2 = null;
+    for (String s : args) {
+      switch (s) {
+        case "human":
+          if (player1 == null) {
+            player1 = new HumanPlayer(true);
+          }
+          else {
+            player2 = new HumanPlayer(false);
+          }
+          break;
+        case "strategy1": {
+          if (player1 == null) {
+            player1 = new AIPlayer(model, new MaxCaptureStrategy(), true);
+          }
+          else {
+            player2 = new AIPlayer(model, new MaxCaptureStrategy(), false);
+          }
+          break;
+        }
+        case "strategy2": {
+          if (player1 == null) {
+            player1 = new AIPlayer(model, new CaptureCornersStrategy(), true);
+          }
+          else {
+            player2 = new AIPlayer(model, new CaptureCornersStrategy(), false);
+          }
+          break;
+        }
+        case "strategy3": {
+          if (player1 == null) {
+            player1 = new AIPlayer(model, new AvoidNeighborCornerStrategy(), true);
+          }
+          else {
+            player2 = new AIPlayer(model, new AvoidNeighborCornerStrategy(), false);
+          }
+          break;
+        }
+        default :
+          player1 = new HumanPlayer(true);
+          player2 = new HumanPlayer(false);
+      }
+    }
+
 
     ReversiView viewPlayer1 = new ReversiGraphicsView(model, player1);
     ReversiView viewPlayer2 = new ReversiGraphicsView(model, player2);
@@ -30,7 +75,9 @@ public class ReversiRunner {
     Controller controller1 = new Controller(model, player1, viewPlayer2);
     Controller controller2 = new Controller(model, player2, viewPlayer1);
 
+    assert player1 != null;
     player1.addController(controller1);
+    assert player2 != null;
     player2.addController(controller2);
 
     model.startGame();
