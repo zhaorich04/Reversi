@@ -400,23 +400,44 @@ public class BasicModel implements ReversiModel, ModelFeatures {
 
   @Override
   public int countFlippedDiscs(Cell cell) {
-    int startingScore = this.getWhiteScore();
-    BasicModel modelCopy  = new BasicModel(this.copyBoard());
 
-    if (modelCopy.isMoveLegal(cell)) {
-      modelCopy.makeMove(cell);
+    if (isMoveLegal(cell)) {
+      int flippedDiscs = 0;
+      flippedDiscs += countDirection(cell, 0, -1);  // Top left
+      flippedDiscs += countDirection(cell, 1, -1);  // top right
+      flippedDiscs += countDirection(cell, 1, 0);   // Right
+      flippedDiscs += countDirection(cell, 0, 1);   // Bottom right
+      flippedDiscs += countDirection(cell, -1, 1);  // Bottom left
+      flippedDiscs += countDirection(cell, -1, 0);  // Left
+
+      return flippedDiscs;
     }
 
-    int newScore = startingScore;
+    return 0;
+  }
 
-    if (isBlacksTurn) {
-      newScore = modelCopy.getBlackScore();
-    }
-    else {
-      newScore = modelCopy.getWhiteScore();
+  private int countDirection(Cell currentCell, int dirQ, int dirR) {
+    int count = 0;
+    CellCoordinate coordinate = currentCell.getCoord();
+
+    try {
+      Cell neighbor = getCell(new CellCoordinate(coordinate.getQ() + dirQ, coordinate.getR() + dirR));
+      Disk currentDisk = isBlacksTurn ? Disk.BLACK : Disk.WHITE;
+      Disk opponentDisk = isBlacksTurn ? Disk.WHITE : Disk.BLACK;
+      while (neighbor != null && neighbor.getDisk() == opponentDisk) {
+        count++;
+        coordinate = neighbor.getCoord();
+        neighbor = getCell(new CellCoordinate(coordinate.getQ() + dirQ, coordinate.getR() + dirR));
+      }
+
+      if (neighbor != null && neighbor.getDisk() == currentDisk) {
+        return count;
+      }
+    } catch (IndexOutOfBoundsException ignored) {
+
     }
 
-    return Math.abs(startingScore - newScore);
+    return 0;
   }
 
 

@@ -44,7 +44,11 @@ public class ReversiPanel extends JPanel {
   // If not set, the highlighted cell will start at (0,0).
   private int selectedR = 1000;
 
+  private boolean blackHintsEnabled;
+  private boolean whiteHintsEnabled;
+
   private boolean hintsEnabled;
+
 
 
 
@@ -57,6 +61,8 @@ public class ReversiPanel extends JPanel {
   public ReversiPanel(ReadOnlyReversiModel model) {
     super();
     this.model = model;
+    this.blackHintsEnabled = false;
+    this.whiteHintsEnabled = false;
     this.hintsEnabled = false;
 
     addMouseListener(new MouseEventsListener());
@@ -108,17 +114,15 @@ public class ReversiPanel extends JPanel {
         g2d.drawPolygon(xCorners, yCorners, 6);
 
         if (q == selectedQ && r == selectedR) {
-          if (hintsEnabled) {
-                int flippedDiscs = model.countFlippedDiscs(model.getCell(new CellCoordinate(q,r)));
-                g2d.setColor(Color.BLACK); // Change color as needed
-
-                System.out.println(flippedDiscs);
-                g2d.drawString(String.valueOf(flippedDiscs),
-                        (int) pixelCenter.getX(), (int) pixelCenter.getY());
-              }
-
+          int flippedDiscs = model.countFlippedDiscs(model.getCell(new CellCoordinate(q,r)));
           g2d.setColor(Color.cyan);
           g2d.fillPolygon(xCorners, yCorners, 6);
+
+          if ((model.getIsBlacksTurn() && blackHintsEnabled) || (!model.getIsBlacksTurn() && whiteHintsEnabled)) {
+            g2d.setColor(Color.BLACK);
+            g2d.drawString(String.valueOf(flippedDiscs),
+                    (int) pixelCenter.getX(), (int) pixelCenter.getY());
+          }
         } else {
           g2d.setColor(Color.lightGray);
           g2d.fillPolygon(xCorners, yCorners, 6);
@@ -242,7 +246,7 @@ public class ReversiPanel extends JPanel {
     private void handleHint() {
       enableHint();
       if (vf != null) {
-        System.out.println("hints enabled");
+        System.out.println("Hints Enabled");
         vf.handleHint();
       }
     }
@@ -253,7 +257,17 @@ public class ReversiPanel extends JPanel {
   }
 
   public void enableHint() {
+    toggleHints(model.getIsBlacksTurn());
     this.hintsEnabled = true;
+  }
+
+  public void toggleHints(boolean isBlack) {
+    if (isBlack) {
+      blackHintsEnabled = !blackHintsEnabled;
+    } else {
+      whiteHintsEnabled = !whiteHintsEnabled;
+    }
+    repaint();
   }
 }
 
