@@ -205,13 +205,13 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
       diskOpponent = Disk.BLACK;
     }
     try {
-      Cell bottomLeftNeighbor = currentCell.getBottomLeftNeighbor(gameBoard);
-      if (bottomLeftNeighbor.getDisk() == diskOpponent
-              && bottomLeftNeighbor.getBottomLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-        if (bottomLeftNeighbor.getBottomLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
+      Cell bottomMiddleNeighbor = currentCell.getbottomMiddleNeighbor(gameBoard);
+      if (bottomMiddleNeighbor.getDisk() == diskOpponent
+              && bottomMiddleNeighbor.getBottomMiddleNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (bottomMiddleNeighbor.getBottomMiddleNeighbor(gameBoard).getDisk() == diskCurrent) {
           return true;
         }
-        return bottomLeftLegalMove(bottomLeftNeighbor);
+        return bottomMiddleLegalMove(bottomMiddleNeighbor);
       }
       return false;
     } catch (IndexOutOfBoundsException e) {
@@ -220,8 +220,30 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
   }
 
   private boolean topMiddleLegalMove(Cell currentCell) {
-  }
+    Disk diskCurrent;
+    Disk diskOpponent;
 
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+    try {
+      Cell topMiddleNeighbor = currentCell.gettopMiddleNeighbor(gameBoard);
+      if (topMiddleNeighbor.getDisk() == diskOpponent
+              && topMiddleNeighbor.gettopMiddleNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (topMiddleNeighbor.gettopMiddleNeighbor(gameBoard).getDisk() == diskCurrent) {
+          return true;
+        }
+        return topMiddleLegalMove(topMiddleNeighbor);
+      }
+      return false;
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
+  }
 
   /**
    * Determines if the move is valid for it's bottom left most neighbor.
@@ -432,6 +454,221 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
       gameBoard.put(currentCell.getCoord(), currentCell);
       flipCells(currentCell);
       isBlacksTurn = true;
+    }
+  }
+
+  /**
+   * Flips its neighboring cells given a cell.
+   * @param currentCell given cell
+   */
+  private void flipCells(Cell currentCell) {
+    if (topLeftLegalMove(currentCell)) {
+      flipTopLeft(currentCell);
+    }
+    if (topRightLegalMove(currentCell)) {
+      flipTopRight(currentCell);
+    }
+    if (rightLegalMove(currentCell)) {
+      flipRight(currentCell);
+    }
+    if (bottomRightLegalMove(currentCell)) {
+      flipBottomRight(currentCell);
+    }
+    if (bottomLeftLegalMove(currentCell)) {
+      flipBottomLeft(currentCell);
+    }
+    if (leftLegalMove(currentCell)) {
+      flipLeft(currentCell);
+    }
+    if (bottomMiddleLegalMove(currentCell)) {
+      flipBottomMiddle(currentCell);
+    }
+    if (topMiddleLegalMove(currentCell)) {
+      flipTopMiddle(currentCell);
+    }
+  }
+
+  /**
+   * Flips the top middle neighboring cells given a cell
+   * @param currentCell given cell
+   */
+  private void flipTopMiddle(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+
+    Cell TopMiddleNeighbor = currentCell.getTopMiddleNeighbor(gameBoard);
+    if (TopMiddleNeighbor.getDisk() == diskOpponent) {
+      TopMiddleNeighbor.setDisk(diskCurrent);
+      flipTopMiddle(TopMiddleNeighbor);
+    }
+  }
+
+  /**
+   * Flips the bottom middle neighboring cells given a cell.
+   * @param currentCell given cell
+   */
+  private void flipBottomMiddle(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+
+    Cell BottomMiddleNeighbor = currentCell.getBottomMiddleNeighbor(gameBoard);
+    if (BottomMiddleNeighbor.getDisk() == diskOpponent) {
+      BottomMiddleNeighbor.setDisk(diskCurrent);
+      flipBottomMiddle(BottomMiddle);
+    }
+  }
+
+  /**
+   * Flips the top left neighboring cells given a cell.
+   * @param currentCell given cell
+   */
+  private void flipTopLeft(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+
+    Cell topLeftNeighbor = currentCell.getTopLeftNeighbor(gameBoard);
+    if (topLeftNeighbor.getDisk() == diskOpponent) {
+      topLeftNeighbor.setDisk(diskCurrent);
+      flipTopLeft(topLeftNeighbor);
+    }
+  }
+
+  /**
+   * Flips the top right neighboring cells given a cell.
+   * @param currentCell given cell
+   */
+  private void flipTopRight(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+
+    Cell topRightNeighbor = currentCell.getTopRightNeighbor(gameBoard);
+    if (topRightNeighbor.getDisk() == diskOpponent) {
+      topRightNeighbor.setDisk(diskCurrent);
+      flipTopRight(topRightNeighbor);
+    }
+  }
+
+  /**
+   * Flips the right neighboring cells given a cell.
+   * @param currentCell given cell
+   */
+  private void flipRight(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+
+    Cell rightNeighbor = currentCell.getRightNeighbor(gameBoard);
+    if (rightNeighbor.getDisk() == diskOpponent) {
+      rightNeighbor.setDisk(diskCurrent);
+      flipRight(rightNeighbor);
+    }
+  }
+
+  /**
+   * Flips the left neighboring cells given a cell.
+   * @param currentCell given cell
+   */
+  private void flipLeft(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+
+    Cell leftNeighbor = currentCell.getLeftNeighbor(gameBoard);
+    if (leftNeighbor.getDisk() == diskOpponent) {
+      leftNeighbor.setDisk(diskCurrent);
+      flipLeft(leftNeighbor);
+    }
+  }
+
+  /**
+   * Flips the bottom right neighboring cells given a cell.
+   * @param currentCell given cell
+   */
+  private void flipBottomRight(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+
+    Cell bottomRightNeighbor = currentCell.getBottomRightNeighbor(gameBoard);
+    if (bottomRightNeighbor.getDisk() == diskOpponent) {
+      bottomRightNeighbor.setDisk(diskCurrent);
+      flipBottomRight(bottomRightNeighbor);
+    }
+  }
+
+  /**
+   * Flips the bottom left neighboring cells given a cell.
+   * @param currentCell given cell
+   */
+  private void flipBottomLeft(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+
+    Cell bottomLeftNeighbor = currentCell.getBottomLeftNeighbor(gameBoard);
+    if (bottomLeftNeighbor.getDisk() == diskOpponent) {
+      bottomLeftNeighbor.setDisk(diskCurrent);
+      flipBottomLeft(bottomLeftNeighbor);
     }
   }
 
