@@ -146,7 +146,6 @@ public class ReversiPanel extends JPanel {
     double y = hexHeight * r;
     return new Point2D.Double(x, y);
   }
-
   public void displayErrorMessage(IllegalArgumentException e) {
     JOptionPane.showMessageDialog(null, "Invalid move: " + e.getMessage(),
             "Error", JOptionPane.ERROR_MESSAGE);
@@ -156,6 +155,7 @@ public class ReversiPanel extends JPanel {
     JOptionPane.showMessageDialog(null, e.getMessage(),
             "Game Over", JOptionPane.ERROR_MESSAGE);
   }
+
 
   private class MouseEventsListener extends MouseInputAdapter {
     @Override

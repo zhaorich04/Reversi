@@ -6,12 +6,14 @@ import cs3500.reversi.model.BasicModel;
 import cs3500.reversi.model.Cell;
 import cs3500.reversi.model.CellCoordinate;
 import cs3500.reversi.model.ReversiModel;
+import cs3500.reversi.model.SquareReversiModel;
 import cs3500.reversi.strategy.AvoidNeighborCornerStrategy;
 import cs3500.reversi.strategy.CaptureCornersStrategy;
 import cs3500.reversi.strategy.MaxCaptureStrategy;
 import cs3500.reversi.view.ReversiGraphicsView;
 import cs3500.reversi.view.ReversiHint;
 import cs3500.reversi.view.ReversiView;
+import cs3500.reversi.view.SquareReversiGraphicsView;
 
 /**
  * Runs a reversi game using the main method.
@@ -22,7 +24,7 @@ public class ReversiRunner {
    * @param args list of args.
    */
   public static void main(String[] args) {
-    ReversiModel model = new BasicModel(4);
+    SquareReversiModel model = new SquareReversiModel(8);
 
     Player player1 = null;
     Player player2 = null;
@@ -70,10 +72,9 @@ public class ReversiRunner {
     }
 
 
-    ReversiView viewPlayer1 = new ReversiGraphicsView(model, player1);
-    ReversiView viewPlayer2 = new ReversiGraphicsView(model, player2);
+    ReversiView viewPlayer1 = new SquareReversiGraphicsView(model, player1);
+    ReversiView viewPlayer2 = new SquareReversiGraphicsView(model, player2);
     ReversiHint reversiHint = new ReversiHint(model);
-    reversiHint.enableHints(true);
 
     Controller controller1 = new Controller(model, player1, reversiHint);
     Controller controller2 = new Controller(model, player2, reversiHint);
