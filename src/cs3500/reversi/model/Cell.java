@@ -154,17 +154,77 @@ public class Cell {
     return board.get(bottomLeft);
   }
 
+  // FOR SQUARE REVERSI:
+
+  /**
+   * Retrieves the top left most neighbor.
+   * @param board given gameBoard
+   * @return the Cell that is the top left most neighbor
+   */
+  Cell getTopLeftNeighbor(Cell[][] board) {
+    return board[this.coord.getQ() - 1][this.coord.getR() - 1];
+  }
+
+  /**
+   * Retrieves the bottom most neighbor.
+   * @param board given gameBoard
+   * @return the Cell that is the bottom left most neighbor
+   */
+  Cell getTopNeighbor(Cell[][] board) {
+    return board[this.coord.getQ()][this.coord.getR() - 1];
+  }
+  /**
+   * Retrieves the top right most neighbor.
+   * @param board given gameBoard
+   * @return the Cell that is the top right most neighbor
+   */
+  Cell getTopRightNeighbor(Cell[][] board) {
+    return board[this.coord.getQ() + 1][this.coord.getR() - 1];
+  }
+
+  /**
+   * Retrieves the right most neighbor.
+   * @param board given gameBoard
+   * @return the Cell that is the right most neighbor
+   */
+  Cell getRightNeighbor(Cell[][] board) {
+    return board[this.coord.getQ() + 1][this.coord.getR()];
+  }
+
+  /**
+   * Retrieves the bottom right most neighbor.
+   * @param board given gameBoard
+   * @return the Cell that is the bottom right most neighbor
+   */
+  Cell getBottomRightNeighbor(Cell[][] board) {
+    return board[this.coord.getQ() + 1][this.coord.getR() + 1];
+  }
+
+  /**
+   * Retrieves the bottom most neighbor.
+   * @param board given gameBoard
+   * @return the Cell that is the bottom left most neighbor
+   */
+  Cell getBottomNeighbor(Cell[][] board) {
+    return board[this.coord.getQ()][this.coord.getR() + 1];
+  }
+
   /**
    * Retrieves the bottom left most neighbor.
    * @param board given gameBoard
    * @return the Cell that is the bottom left most neighbor
    */
-  Cell getBottomLeftNeighbor(Map<CellCoordinate, Cell> board) {
-    CellCoordinate bottomLeft = new CellCoordinate(this.coord.getQ() - 1, this.coord.getR() + 1);
-    if (!board.containsKey(bottomLeft)) {
-      throw new IndexOutOfBoundsException("This cell does not have a bottom left neighbor");
-    }
-    return board.get(bottomLeft);
+  Cell getBottomLeftNeighbor(Cell[][] board) {
+    return board[this.coord.getQ() - 1][this.coord.getR() + 1];
+  }
+
+  /**
+   * Retrieves the left most neighbor.
+   * @param board given gameBoard
+   * @return the Cell that is the left most neighbor
+   */
+  Cell getLeftNeighbor(Cell[][] board) {
+    return board[this.coord.getQ() - 1][this.coord.getR()];
   }
 
 
