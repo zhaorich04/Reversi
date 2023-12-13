@@ -47,12 +47,6 @@ public class ReversiPanel extends JPanel {
   private boolean blackHintsEnabled;
   private boolean whiteHintsEnabled;
 
-  private boolean hintsEnabled;
-
-
-
-
-
   /**
    * constructs a panel in the game of reversi.
    *
@@ -63,7 +57,6 @@ public class ReversiPanel extends JPanel {
     this.model = model;
     this.blackHintsEnabled = false;
     this.whiteHintsEnabled = false;
-    this.hintsEnabled = false;
 
     addMouseListener(new MouseEventsListener());
     setFocusable(true);
@@ -258,7 +251,6 @@ public class ReversiPanel extends JPanel {
 
   public void enableHint() {
     toggleHints(model.getIsBlacksTurn());
-    this.hintsEnabled = true;
   }
 
   public void toggleHints(boolean isBlack) {

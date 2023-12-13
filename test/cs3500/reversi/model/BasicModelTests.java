@@ -7,9 +7,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Map;
 
-import cs3500.reversi.model.BasicModel;
-import cs3500.reversi.model.CellCoordinate;
-import cs3500.reversi.model.Disk;
 import cs3500.reversi.strategy.AvoidNeighborCornerStrategy;
 import cs3500.reversi.strategy.CaptureCornersStrategy;
 import cs3500.reversi.strategy.MaxCaptureStrategy;
