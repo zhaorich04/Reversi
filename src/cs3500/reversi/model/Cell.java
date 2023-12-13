@@ -155,6 +155,21 @@ public class Cell {
   }
 
   /**
+   * Retrieves the bottom left most neighbor.
+   * @param board given gameBoard
+   * @return the Cell that is the bottom left most neighbor
+   */
+  Cell getBottomLeftNeighbor(Map<CellCoordinate, Cell> board) {
+    CellCoordinate bottomLeft = new CellCoordinate(this.coord.getQ() - 1, this.coord.getR() + 1);
+    if (!board.containsKey(bottomLeft)) {
+      throw new IndexOutOfBoundsException("This cell does not have a bottom left neighbor");
+    }
+    return board.get(bottomLeft);
+  }
+
+
+
+  /**
    * Returns this cell's neighbors.
    * @param board the game board.
    * @return the neighbors of this cell.

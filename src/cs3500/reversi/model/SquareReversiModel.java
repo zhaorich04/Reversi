@@ -67,14 +67,6 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
 
   }
 
-  public Map<CellCoordinate, Cell> copyBoard() {
-    Map<CellCoordinate, Cell> boardCopy = new HashMap<>();
-    for (Cell cell : gameBoard.values()) {
-      boardCopy.put(cell.getCoord(), new Cell(cell.getCoord(), cell.getDisk()));
-    }
-    return boardCopy;
-  }
-
   @Override
   public Map<CellCoordinate, Cell> getGameBoard() {
     return null;
@@ -82,7 +74,7 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
 
   @Override
   public boolean getIsBlacksTurn() {
-    return false;
+    return isBlacksTurn;
   }
 
   @Override
@@ -141,18 +133,13 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
 //  }
 
   @Override
-  public boolean hasLegalMove() {
-    return false;
-  }
-
-  @Override
   public Disk getWinner() {
     return null;
   }
 
   @Override
   public int getBoardSize() {
-    return 0;
+    return boardSize;
   }
 
   @Override
@@ -160,16 +147,292 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
     return gameBoard[coord.getQ()][coord.getR()];
   }
 
-  @Override
+  /**
+   * Determines if placing a given cell is a valid move.
+   * @param currentCell given cell
+   * @return true if the move is legal
+   */
   public boolean isMoveLegal(Cell currentCell) {
-//    if (!gameBoard.containsKey(currentCell.getCoord())) {
-//      return false;
-//    }
-//    if (currentCell.isOccupied()) {
-//      return false;
-//    }
-//    return isSquareMoveLegal(currentCell);
-    return true;
+    if (gameBoard[currentCell.getCoord().getQ()][currentCell.getCoord().getR()] == null) {
+      return false;
+    }
+    if (currentCell.isOccupied()) {
+      return false;
+    }
+    return isMoveLegalHelper(currentCell);
+  }
+
+  /**
+   * Returns whether the current player has a legal move.
+   * @return true if the current player has a legal move.
+   */
+  public boolean hasLegalMove() {
+    for (Cell[] col : gameBoard) {
+      for (Cell row : col) {
+        if (isMoveLegal(row)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Determines if placing a given cell is valid by checking all of the cell's neighbors.
+   * @param currentCell given cell
+   * @return true if at least of the cell's neighbors has a valid move
+   */
+  private boolean isMoveLegalHelper(Cell currentCell) {
+    return bottomLeftLegalMove(currentCell)
+            || bottomRightLegalMove(currentCell)
+            || topLeftLegalMove(currentCell)
+            || topRightLegalMove(currentCell)
+            || rightLegalMove(currentCell)
+            || leftLegalMove(currentCell)
+            || topMiddleLegalMove(currentCell)
+            || bottomMiddleLegalMove(currentCell);
+  }
+
+  private boolean bottomMiddleLegalMove(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+    try {
+      Cell bottomLeftNeighbor = currentCell.getBottomLeftNeighbor(gameBoard);
+      if (bottomLeftNeighbor.getDisk() == diskOpponent
+              && bottomLeftNeighbor.getBottomLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (bottomLeftNeighbor.getBottomLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
+          return true;
+        }
+        return bottomLeftLegalMove(bottomLeftNeighbor);
+      }
+      return false;
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
+  }
+
+  private boolean topMiddleLegalMove(Cell currentCell) {
+  }
+
+
+  /**
+   * Determines if the move is valid for it's bottom left most neighbor.
+   * @param currentCell given cell
+   * @return true if the move is valid
+   */
+  private boolean bottomLeftLegalMove(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+    try {
+      Cell bottomLeftNeighbor = currentCell.getBottomLeftNeighbor(gameBoard);
+      if (bottomLeftNeighbor.getDisk() == diskOpponent
+              && bottomLeftNeighbor.getBottomLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (bottomLeftNeighbor.getBottomLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
+          return true;
+        }
+        return bottomLeftLegalMove(bottomLeftNeighbor);
+      }
+      return false;
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
+  }
+
+  /**
+   * Determines if the move is valid for it's bottom right most neighbor.
+   * @param currentCell given cell
+   * @return true if the move is valid
+   */
+  private boolean bottomRightLegalMove(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+    try {
+      Cell bottomRightNeighbor = currentCell.getBottomRightNeighbor(gameBoard);
+      if (bottomRightNeighbor.getDisk() == diskOpponent
+              && bottomRightNeighbor.getBottomRightNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (bottomRightNeighbor.getBottomRightNeighbor(gameBoard).getDisk() == diskCurrent) {
+          return true;
+        }
+        return bottomRightLegalMove(bottomRightNeighbor);
+      }
+      return false;
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
+  }
+
+  /**
+   * Determines if the move is valid for it's top right most neighbor.
+   * @param currentCell given cell
+   * @return true if the move is valid
+   */
+  private boolean topRightLegalMove(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+    try {
+      Cell topRightNeighbor = currentCell.getTopRightNeighbor(gameBoard);
+      if (topRightNeighbor.getDisk() == diskOpponent
+              && topRightNeighbor.getTopRightNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (topRightNeighbor.getTopRightNeighbor(gameBoard).getDisk() == diskCurrent) {
+          return true;
+        }
+        return topRightLegalMove(topRightNeighbor);
+      }
+      return false;
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
+  }
+
+  /**
+   * Determines if the move is valid for it's top left most neighbor.
+   * @param currentCell given cell
+   * @return true if the move is valid
+   */
+  private boolean topLeftLegalMove(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+    try {
+      Cell topLeftNeighbor = currentCell.getTopLeftNeighbor(gameBoard);
+      if (topLeftNeighbor.getDisk() == diskOpponent
+              && topLeftNeighbor.getTopLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (topLeftNeighbor.getTopLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
+          return true;
+        }
+        return topLeftLegalMove(topLeftNeighbor);
+      }
+      return false;
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
+  }
+
+  /**
+   * Determines if the move is valid for it's right most neighbor.
+   * @param currentCell given cell
+   * @return true if the move is valid
+   */
+  private boolean rightLegalMove(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+    try {
+      Cell rightNeighbor = currentCell.getRightNeighbor(gameBoard);
+      if (rightNeighbor.getDisk() == diskOpponent
+              && rightNeighbor.getRightNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (rightNeighbor.getRightNeighbor(gameBoard).getDisk() == diskCurrent) {
+          return true;
+        }
+        return rightLegalMove(rightNeighbor);
+      }
+      return false;
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
+  }
+
+  /**
+   * Determines if the move is valid for it's left most neighbor.
+   * @param currentCell given cell
+   * @return true if the move is valid
+   */
+  private boolean leftLegalMove(Cell currentCell) {
+    Disk diskCurrent;
+    Disk diskOpponent;
+
+    if (isBlacksTurn) {
+      diskCurrent = Disk.BLACK;
+      diskOpponent = Disk.WHITE;
+    } else {
+      diskCurrent = Disk.WHITE;
+      diskOpponent = Disk.BLACK;
+    }
+    try {
+      Cell leftNeighbor = currentCell.getLeftNeighbor(gameBoard);
+      if (leftNeighbor.getDisk() == diskOpponent
+              && leftNeighbor.getLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (leftNeighbor.getLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
+          return true;
+        }
+        return leftLegalMove(leftNeighbor);
+      }
+      return false;
+    } catch (IndexOutOfBoundsException e) {
+      return false;
+    }
+  }
+
+  /**
+   * Makes a "move" for either Black or White's turn.
+   * @param currentCell given cell
+   * @throws IllegalStateException if the game is not over.
+   */
+  @Override
+  public void makeMove(Cell currentCell) {
+    if (isGameOver()) {
+      throw new IllegalStateException("Game is over!");
+    }
+    if (!isMoveLegal(currentCell)) {
+      throw new IllegalArgumentException("Move is illegal");
+    }
+    if (isBlacksTurn) {
+      currentCell.setDisk(Disk.BLACK);
+      gameBoard.put(currentCell.getCoord(), currentCell);
+      flipCells(currentCell);
+      isBlacksTurn = false;
+    } else {
+      currentCell.setDisk(Disk.WHITE);
+      gameBoard.put(currentCell.getCoord(), currentCell);
+      flipCells(currentCell);
+      isBlacksTurn = true;
+    }
   }
 
   @Override
