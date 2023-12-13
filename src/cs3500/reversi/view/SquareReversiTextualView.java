@@ -25,11 +25,11 @@ public class SquareReversiTextualView {
 
     for (int col = 0; col < size; col++) {
       for (int row = 0; row < size; row++) {
-//        System.out.println(col);
-//        System.out.println(row);
+        System.out.println(col);
+        System.out.println(row);
         printedBoard.append(makeCell(col, row));
-        printedBoard.append("\n");
       }
+      printedBoard.append("\n");
     }
     return printedBoard.toString();
   }
