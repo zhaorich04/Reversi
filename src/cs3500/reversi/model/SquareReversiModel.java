@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SquareReversiModel implements ReversiModel, ModelFeatures {
+public class SquareReversiModel implements ReversiModel {
 
   private List<ModelListeners> modelListeners;
   private boolean gameStarted;
@@ -54,7 +54,16 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
 
   @Override
   public void passTurn() {
-    return;
+    if (isGameOver()) {
+      throw new IllegalStateException("Game is over!");
+    }
+    if (isBlacksTurn) {
+      numConsecutiveMovesBlack = 0;
+      isBlacksTurn = false;
+    } else {
+      numConsecutiveMovesWhite = 0;
+      isBlacksTurn = true;
+    }
   }
 
   @Override
@@ -75,61 +84,6 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
   @Override
   public int countFlippedDiscs(Cell cell) {
     return 0;
-  }
-
-
-//  private boolean isSquareMoveLegal(Cell currentCell) {
-//    return topLeftLegalMove(currentCell)
-//            || topRightLegalMove(currentCell)
-//            || rightLegalMove(currentCell)
-//            || bottomRightLegalMove(currentCell)
-//            || bottomLeftLegalMove(currentCell)
-//            || leftLegalMove(currentCell)
-//            || topLegalMove(currentCell)
-//            || bottomLegalMove(currentCell);
-//  }
-//
-//  private boolean topLegalMove(Cell currentCell) {
-//    Disk diskCurrent = isBlacksTurn ? Disk.BLACK : Disk.WHITE;
-//    Disk diskOpponent = isBlacksTurn ? Disk.WHITE : Disk.BLACK;
-//
-//    try {
-//      Cell topNeighbor = currentCell.getTopNeighbor(gameBoard);
-//      if (topNeighbor.getDisk() == diskOpponent
-//              && topNeighbor.getTopNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-//        if (topNeighbor.getTopNeighbor(gameBoard).getDisk() == diskCurrent) {
-//          return true;
-//        }
-//        return topLegalMove(topNeighbor);
-//      }
-//      return false;
-//    } catch (IndexOutOfBoundsException e) {
-//      return false;
-//    }
-//  }
-//
-//  private boolean bottomLegalMove(Cell currentCell) {
-//    Disk diskCurrent = isBlacksTurn ? Disk.BLACK : Disk.WHITE;
-//    Disk diskOpponent = isBlacksTurn ? Disk.WHITE : Disk.BLACK;
-//
-//    try {
-//      Cell bottomNeighbor = currentCell.getBottomNeighbor(gameBoard);
-//      if (bottomNeighbor.getDisk() == diskOpponent
-//              && bottomNeighbor.getBottomNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-//        if (bottomNeighbor.getBottomNeighbor(gameBoard).getDisk() == diskCurrent) {
-//          return true;
-//        }
-//        return bottomLegalMove(bottomNeighbor);
-//      }
-//      return false;
-//    } catch (IndexOutOfBoundsException e) {
-//      return false;
-//    }
-//  }
-
-  @Override
-  public Disk getWinner() {
-    return null;
   }
 
   @Override
@@ -667,24 +621,76 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
     }
   }
 
-  @Override
+  /**
+   * Determines the current score for white. The score is the number of white disks on the board.
+   * @return white's score.
+   */
   public int getWhiteScore() {
-    return 0;
+    int score = 0;
+
+    for (Cell[] col : gameBoard) {
+      for (Cell cell : col) {
+        if (cell.getDisk() == Disk.WHITE) {
+          score++;
+        }
+      }
+    }
+    return score;
   }
 
-  @Override
+  /**
+   * Determines the current score for black. The score is the number of black disks on the board.
+   * @return black's score.
+   */
   public int getBlackScore() {
-    return 0;
+    int score = 0;
+
+    for (Cell[] col : gameBoard) {
+      for (Cell cell : col) {
+        if (cell.getDisk() == Disk.BLACK) {
+          score++;
+        }
+      }
+    }
+    return score;
+  }
+
+  /**
+   * Retrieves the disk of the winning player.
+   * @return Disk of the winning player
+   * @throws IllegalStateException if the game is not over.
+   */
+  @Override
+  public Disk getWinner() {
+    if (!isGameOver()) {
+      throw new IllegalStateException("Game is not over!");
+    }
+
+    if (getBlackScore() > getWhiteScore()) {
+      return Disk.BLACK;
+    }
+    if (getBlackScore() < getWhiteScore()) {
+      return Disk.WHITE;
+    }
+    return Disk.EMPTY;
   }
 
   @Override
   public boolean isGameOver() {
-    return false;
+    return (numConsecutiveMovesBlack == 0 && numConsecutiveMovesWhite == 0
+            || (getBlackScore() > getWhiteScore() && !hasLegalMove())
+            || (getBlackScore() < getWhiteScore() && !hasLegalMove()))
+            || (getBlackScore() == getWhiteScore() && !hasLegalMove());
   }
 
+  /**
+   * Creates a duplicate hashmap of the board.
+   *
+   * @return copy of the HashMap of the board
+   */
   @Override
-  public void notifyAction() {
-
+  public Map<CellCoordinate, Cell> copyBoard() {
+    return null;
   }
 }
 

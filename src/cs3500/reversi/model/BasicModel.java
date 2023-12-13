@@ -403,12 +403,12 @@ public class BasicModel implements ReversiModel, ModelFeatures {
 
     if (isMoveLegal(cell)) {
       int flippedDiscs = 0;
-      flippedDiscs += countDirection(cell, 0, -1);  // Top left
-      flippedDiscs += countDirection(cell, 1, -1);  // top right
-      flippedDiscs += countDirection(cell, 1, 0);   // Right
-      flippedDiscs += countDirection(cell, 0, 1);   // Bottom right
-      flippedDiscs += countDirection(cell, -1, 1);  // Bottom left
-      flippedDiscs += countDirection(cell, -1, 0);  // Left
+      flippedDiscs += countDirection(cell, 0, -1);
+      flippedDiscs += countDirection(cell, 1, -1);
+      flippedDiscs += countDirection(cell, 1, 0);
+      flippedDiscs += countDirection(cell, 0, 1);
+      flippedDiscs += countDirection(cell, -1, 1);
+      flippedDiscs += countDirection(cell, -1, 0);
 
       return flippedDiscs;
     }
