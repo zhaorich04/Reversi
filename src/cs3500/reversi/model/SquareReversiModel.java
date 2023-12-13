@@ -28,7 +28,7 @@ public class SquareReversiModel implements ReversiModel {
     this.gameStarted = false;
     // top left, top, top right, right, bottom right, bottom, bottom left, left
     this.initVectors = new int[][]{{boardSize / 2 - 1, boardSize / 2 - 1},
-            {boardSize / 2, boardSize / 2 - 1}, {boardSize / 2, boardSize / 2 - 1},
+            {boardSize / 2 - 1, boardSize / 2}, {boardSize / 2, boardSize / 2 - 1},
             {boardSize / 2, boardSize / 2}};
     this.modelListeners = new ArrayList<>();
   }

@@ -23,10 +23,8 @@ public class SquareReversiTextualView {
     StringBuilder printedBoard = new StringBuilder();
     int size = m.getBoardSize();
 
-    for (int col = 0; col < size; col++) {
-      for (int row = 0; row < size; row++) {
-        System.out.println(col);
-        System.out.println(row);
+    for (int row = 0; row < size; row++) {
+      for (int col = 0; col < size; col++) {
         printedBoard.append(makeCell(col, row));
       }
       printedBoard.append("\n");
