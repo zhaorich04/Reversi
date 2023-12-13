@@ -13,53 +13,43 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
   private int numConsecutiveMovesWhite;
   private int numConsecutiveMovesBlack;
   private final int boardSize;
-  private final Map<CellCoordinate, Cell> gameBoard;
+  private final Cell[][] gameBoard;
   private final int[][] initVectors;
 
   public SquareReversiModel(int boardSize) {
-    if (boardSize < 3 || boardSize % 2 != 0) {
+    if (boardSize < 4 || boardSize % 2 != 0) {
       throw new IllegalArgumentException("Board size must be an even number greater than or equal to 3");
     }
     this.boardSize = boardSize;
-    this.gameBoard = new HashMap<>();
+    this.gameBoard = new Cell[boardSize][boardSize];
     this.isBlacksTurn = true;
     this.numConsecutiveMovesBlack = 1;
     this.numConsecutiveMovesWhite = 1;
     this.gameStarted = false;
     // top left, top, top right, right, bottom right, bottom, bottom left, left
-    this.initVectors = new int[][]{{-1, -1}, {0, -1}, {1, -1}, {1, 0}};
+    this.initVectors = new int[][]{{boardSize / 2 - 1, boardSize / 2 - 1},
+            {boardSize / 2, boardSize / 2 - 1}, {boardSize / 2, boardSize / 2 - 1},
+            {boardSize / 2, boardSize / 2}};
     this.modelListeners = new ArrayList<>();
   }
 
   public void startGame() {
-
-    for (int q = -boardSize + 1; q < boardSize; q++) {
-      for (int r = Math.max(-boardSize + 1, -q - boardSize + 1);
-           r < Math.min(boardSize, -q + boardSize); r++) {
-        CellCoordinate coordinate = new CellCoordinate(q, r);
-        Cell cell = new Cell(coordinate);
-        addCell(cell);
+    for (int col = 0; col < boardSize; col++) {
+      for (int row = 0; row < boardSize; row++) {
+        Cell cell = new Cell(new CellCoordinate(col, row));
+        gameBoard[col][row] = cell;
       }
     }
 
-    for (int cell = 0; cell < initVectors.length; cell++) {
-      for (int[] v : initVectors) {
-        Cell currentCell = gameBoard.get(new CellCoordinate(v[0], v[1]));
-        if (cell % 2 == 1) {
-          currentCell.setDisk(Disk.BLACK);
-        } else {
-          currentCell.setDisk(Disk.WHITE);
-        }
-        cell++;
+    for (int[] v : initVectors) {
+      if (v[0] == v[1]) {
+        getCell(new CellCoordinate(v[0], v[1])).setDisk(Disk.BLACK);
+      } else {
+        getCell(new CellCoordinate(v[0], v[1])).setDisk(Disk.WHITE);
       }
     }
 
     gameStarted = true;
-  }
-
-
-  private void addCell(Cell cell) {
-    gameBoard.put(cell.getCoord(), cell);
   }
 
   @Override
@@ -166,8 +156,8 @@ public class SquareReversiModel implements ReversiModel, ModelFeatures {
   }
 
   @Override
-  public Cell getCell(CellCoordinate coordinate) {
-    return null;
+  public Cell getCell(CellCoordinate coord) {
+    return gameBoard[coord.getQ()][coord.getR()];
   }
 
   @Override
