@@ -161,7 +161,7 @@ public class Cell {
    * @param board given gameBoard
    * @return the Cell that is the top left most neighbor
    */
-  Cell getTopLeftNeighbor(Cell[][] board) {
+  Cell squareGetTopLeftNeighbor(Cell[][] board) {
     return board[this.coord.getQ() - 1][this.coord.getR() - 1];
   }
 
@@ -170,15 +170,16 @@ public class Cell {
    * @param board given gameBoard
    * @return the Cell that is the bottom left most neighbor
    */
-  Cell getTopNeighbor(Cell[][] board) {
+  Cell squareGetTopNeighbor(Cell[][] board) {
     return board[this.coord.getQ()][this.coord.getR() - 1];
   }
+
   /**
    * Retrieves the top right most neighbor.
    * @param board given gameBoard
    * @return the Cell that is the top right most neighbor
    */
-  Cell getTopRightNeighbor(Cell[][] board) {
+  Cell squareGetTopRightNeighbor(Cell[][] board) {
     return board[this.coord.getQ() + 1][this.coord.getR() - 1];
   }
 
@@ -187,7 +188,7 @@ public class Cell {
    * @param board given gameBoard
    * @return the Cell that is the right most neighbor
    */
-  Cell getRightNeighbor(Cell[][] board) {
+  Cell squareGetRightNeighbor(Cell[][] board) {
     return board[this.coord.getQ() + 1][this.coord.getR()];
   }
 
@@ -196,7 +197,7 @@ public class Cell {
    * @param board given gameBoard
    * @return the Cell that is the bottom right most neighbor
    */
-  Cell getBottomRightNeighbor(Cell[][] board) {
+  Cell squareGetBottomRightNeighbor(Cell[][] board) {
     return board[this.coord.getQ() + 1][this.coord.getR() + 1];
   }
 
@@ -205,7 +206,7 @@ public class Cell {
    * @param board given gameBoard
    * @return the Cell that is the bottom left most neighbor
    */
-  Cell getBottomNeighbor(Cell[][] board) {
+  Cell squareGetBottomNeighbor(Cell[][] board) {
     return board[this.coord.getQ()][this.coord.getR() + 1];
   }
 
@@ -214,7 +215,7 @@ public class Cell {
    * @param board given gameBoard
    * @return the Cell that is the bottom left most neighbor
    */
-  Cell getBottomLeftNeighbor(Cell[][] board) {
+  Cell squareGetBottomLeftNeighbor(Cell[][] board) {
     return board[this.coord.getQ() - 1][this.coord.getR() + 1];
   }
 
@@ -223,7 +224,7 @@ public class Cell {
    * @param board given gameBoard
    * @return the Cell that is the left most neighbor
    */
-  Cell getLeftNeighbor(Cell[][] board) {
+  Cell squareGetLeftNeighbor(Cell[][] board) {
     return board[this.coord.getQ() - 1][this.coord.getR()];
   }
 

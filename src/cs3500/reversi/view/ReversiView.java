@@ -11,8 +11,6 @@ public interface ReversiView {
    */
   void setVisible(boolean b);
 
-//  void addFeatures(ViewFeatures features);
-
   void repaintView();
 
   void displayErrorMessage(IllegalArgumentException e);

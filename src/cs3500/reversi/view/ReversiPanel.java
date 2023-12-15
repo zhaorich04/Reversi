@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.Objects;
 
 import javax.swing.JPanel;
@@ -20,11 +19,9 @@ import javax.swing.AbstractAction;
 
 import javax.swing.event.MouseInputAdapter;
 
-import cs3500.reversi.model.Cell;
 import cs3500.reversi.model.CellCoordinate;
 import cs3500.reversi.model.Disk;
 import cs3500.reversi.model.ReadOnlyReversiModel;
-import cs3500.reversi.strategy.MaxCaptureStrategy;
 
 /**
  * Represents a panel in the gema of reversi.
@@ -63,13 +60,13 @@ public class ReversiPanel extends JPanel {
     requestFocusInWindow();
     requestFocus();
 
-    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW)).
-            put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "pressed");
-    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW)).
-            put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "pressed");
+    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW))
+            .put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "pressed");
+    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW))
+            .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "pressed");
     getActionMap().put("pressed", new KeyEventsListener());
-    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW)).
-            put(KeyStroke.getKeyStroke(KeyEvent.VK_H, 0), "pressed");
+    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW))
+            .put(KeyStroke.getKeyStroke(KeyEvent.VK_H, 0), "pressed");
 
   }
 
@@ -111,7 +108,8 @@ public class ReversiPanel extends JPanel {
           g2d.setColor(Color.cyan);
           g2d.fillPolygon(xCorners, yCorners, 6);
 
-          if ((model.getIsBlacksTurn() && blackHintsEnabled) || (!model.getIsBlacksTurn() && whiteHintsEnabled)) {
+          if ((model.getIsBlacksTurn() && blackHintsEnabled)
+                  || (!model.getIsBlacksTurn() && whiteHintsEnabled)) {
             g2d.setColor(Color.BLACK);
             g2d.drawString(String.valueOf(flippedDiscs),
                     (int) pixelCenter.getX(), (int) pixelCenter.getY());
@@ -146,6 +144,7 @@ public class ReversiPanel extends JPanel {
     double y = hexHeight * r;
     return new Point2D.Double(x, y);
   }
+
   public void displayErrorMessage(IllegalArgumentException e) {
     JOptionPane.showMessageDialog(null, "Invalid move: " + e.getMessage(),
             "Error", JOptionPane.ERROR_MESSAGE);
@@ -253,6 +252,10 @@ public class ReversiPanel extends JPanel {
     toggleHints(model.getIsBlacksTurn());
   }
 
+  /**
+   * Switches the boolean values to enable or disable hints.
+   * @param isBlack true if it's the black disk player.
+   */
   public void toggleHints(boolean isBlack) {
     if (isBlack) {
       blackHintsEnabled = !blackHintsEnabled;

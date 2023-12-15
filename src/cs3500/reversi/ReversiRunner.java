@@ -1,16 +1,10 @@
 package cs3500.reversi;
 
 import cs3500.reversi.controller.Controller;
-import cs3500.reversi.controller.ReversiController;
-import cs3500.reversi.model.BasicModel;
-import cs3500.reversi.model.Cell;
-import cs3500.reversi.model.CellCoordinate;
-import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.SquareReversiModel;
 import cs3500.reversi.strategy.AvoidNeighborCornerStrategy;
 import cs3500.reversi.strategy.CaptureCornersStrategy;
 import cs3500.reversi.strategy.MaxCaptureStrategy;
-import cs3500.reversi.view.ReversiGraphicsView;
 import cs3500.reversi.view.ReversiHint;
 import cs3500.reversi.view.ReversiView;
 import cs3500.reversi.view.SquareReversiGraphicsView;

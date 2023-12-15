@@ -8,13 +8,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 
 import cs3500.reversi.model.Cell;
 import cs3500.reversi.model.CellCoordinate;
 import cs3500.reversi.model.Disk;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 
+/**
+ * Class representing a panel for a game of square reversi.
+ */
 public class SquareReversiPanel extends JPanel {
   private final ReadOnlyReversiModel model;
 
@@ -28,6 +35,10 @@ public class SquareReversiPanel extends JPanel {
   private boolean blackHintsEnabled;
   private boolean whiteHintsEnabled;
 
+  /**
+   * constructs a panel for a game of square reversi.
+   * @param model the given model.
+   */
   public SquareReversiPanel(ReadOnlyReversiModel model) {
     super();
     this.model = model;
@@ -39,13 +50,13 @@ public class SquareReversiPanel extends JPanel {
     requestFocusInWindow();
     requestFocus();
 
-    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW)).
-            put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "pressed");
-    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW)).
-            put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "pressed");
+    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW))
+            .put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "pressed");
+    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW))
+            .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "pressed");
     getActionMap().put("pressed", new KeyEventsListener());
-    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW)).
-            put(KeyStroke.getKeyStroke(KeyEvent.VK_H, 0), "pressed");
+    getInputMap((JComponent.WHEN_IN_FOCUSED_WINDOW))
+            .put(KeyStroke.getKeyStroke(KeyEvent.VK_H, 0), "pressed");
   }
 
   public void setFeaturesListener(ViewFeatures vf) {
@@ -190,6 +201,10 @@ public class SquareReversiPanel extends JPanel {
     toggleHints(model.getIsBlacksTurn());
   }
 
+  /**
+   * Turns hints on or off for a black or white player.
+   * @param isBlack true if its the black player.
+   */
   public void toggleHints(boolean isBlack) {
     if (isBlack) {
       blackHintsEnabled = !blackHintsEnabled;

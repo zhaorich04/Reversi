@@ -2,7 +2,6 @@ package cs3500.reversi;
 
 import cs3500.reversi.controller.Controller;
 import cs3500.reversi.model.Cell;
-import cs3500.reversi.model.ReadOnlyReversiModel;
 
 /**
  * Class representing a human player for a game of Reversi.

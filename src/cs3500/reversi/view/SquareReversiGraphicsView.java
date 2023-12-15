@@ -1,8 +1,8 @@
 package cs3500.reversi.view;
 
-import java.awt.*;
+import java.awt.Color;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import cs3500.reversi.Player;
 import cs3500.reversi.model.ReadOnlyReversiModel;

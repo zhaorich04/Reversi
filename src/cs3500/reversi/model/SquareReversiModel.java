@@ -1,13 +1,12 @@
 package cs3500.reversi.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * Model for a game of square reversi.
+ */
 public class SquareReversiModel implements ReversiModel {
 
-  private List<ModelListeners> modelListeners;
   private boolean gameStarted;
   private boolean isBlacksTurn;
   private int numConsecutiveMovesWhite;
@@ -16,9 +15,14 @@ public class SquareReversiModel implements ReversiModel {
   private final Cell[][] gameBoard;
   private final int[][] initVectors;
 
+  /**
+   * Constructs a game of square reversi.
+   * @param boardSize the given boardSize.
+   */
   public SquareReversiModel(int boardSize) {
     if (boardSize < 4 || boardSize % 2 != 0) {
-      throw new IllegalArgumentException("Board size must be an even number greater than or equal to 3");
+      throw new IllegalArgumentException("Board size must be an even "
+              + "number greater than or equal to 3");
     }
     this.boardSize = boardSize;
     this.gameBoard = new Cell[boardSize][boardSize];
@@ -28,11 +32,13 @@ public class SquareReversiModel implements ReversiModel {
     this.gameStarted = false;
     // top left, top, top right, right, bottom right, bottom, bottom left, left
     this.initVectors = new int[][]{{boardSize / 2 - 1, boardSize / 2 - 1},
-            {boardSize / 2 - 1, boardSize / 2}, {boardSize / 2, boardSize / 2 - 1},
-            {boardSize / 2, boardSize / 2}};
-    this.modelListeners = new ArrayList<>();
+      {boardSize / 2 - 1, boardSize / 2}, {boardSize / 2, boardSize / 2 - 1},
+      {boardSize / 2, boardSize / 2}};
   }
 
+  /**
+   * Starts a game of square reversi with the initial board state.
+   */
   public void startGame() {
     for (int col = 0; col < boardSize; col++) {
       for (int row = 0; row < boardSize; row++) {
@@ -68,7 +74,7 @@ public class SquareReversiModel implements ReversiModel {
 
   @Override
   public void addListener(ModelListeners listeners) {
-
+    // method unused for square reversi (didn't get to controller and strategy implementations)
   }
 
   @Override
@@ -154,10 +160,10 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
     try {
-      Cell bottomMiddleNeighbor = currentCell.getBottomNeighbor(gameBoard);
+      Cell bottomMiddleNeighbor = currentCell.squareGetBottomNeighbor(gameBoard);
       if (bottomMiddleNeighbor.getDisk() == diskOpponent
-              && bottomMiddleNeighbor.getBottomNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-        if (bottomMiddleNeighbor.getBottomNeighbor(gameBoard).getDisk() == diskCurrent) {
+              && bottomMiddleNeighbor.squareGetBottomNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (bottomMiddleNeighbor.squareGetBottomNeighbor(gameBoard).getDisk() == diskCurrent) {
           return true;
         }
         return bottomMiddleLegalMove(bottomMiddleNeighbor);
@@ -180,10 +186,10 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
     try {
-      Cell topMiddleNeighbor = currentCell.getTopNeighbor(gameBoard);
+      Cell topMiddleNeighbor = currentCell.squareGetTopNeighbor(gameBoard);
       if (topMiddleNeighbor.getDisk() == diskOpponent
-              && topMiddleNeighbor.getTopNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-        if (topMiddleNeighbor.getTopNeighbor(gameBoard).getDisk() == diskCurrent) {
+              && topMiddleNeighbor.squareGetTopNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (topMiddleNeighbor.squareGetTopNeighbor(gameBoard).getDisk() == diskCurrent) {
           return true;
         }
         return topMiddleLegalMove(topMiddleNeighbor);
@@ -211,10 +217,11 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
     try {
-      Cell bottomLeftNeighbor = currentCell.getBottomLeftNeighbor(gameBoard);
+      Cell bottomLeftNeighbor = currentCell.squareGetBottomLeftNeighbor(gameBoard);
       if (bottomLeftNeighbor.getDisk() == diskOpponent
-              && bottomLeftNeighbor.getBottomLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-        if (bottomLeftNeighbor.getBottomLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
+              && bottomLeftNeighbor.squareGetBottomLeftNeighbor(gameBoard).getDisk()
+              != Disk.EMPTY) {
+        if (bottomLeftNeighbor.squareGetBottomLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
           return true;
         }
         return bottomLeftLegalMove(bottomLeftNeighbor);
@@ -242,10 +249,11 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
     try {
-      Cell bottomRightNeighbor = currentCell.getBottomRightNeighbor(gameBoard);
+      Cell bottomRightNeighbor = currentCell.squareGetBottomRightNeighbor(gameBoard);
       if (bottomRightNeighbor.getDisk() == diskOpponent
-              && bottomRightNeighbor.getBottomRightNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-        if (bottomRightNeighbor.getBottomRightNeighbor(gameBoard).getDisk() == diskCurrent) {
+              && bottomRightNeighbor.squareGetBottomRightNeighbor(gameBoard).getDisk()
+              != Disk.EMPTY) {
+        if (bottomRightNeighbor.squareGetBottomRightNeighbor(gameBoard).getDisk() == diskCurrent) {
           return true;
         }
         return bottomRightLegalMove(bottomRightNeighbor);
@@ -273,10 +281,10 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
     try {
-      Cell topRightNeighbor = currentCell.getTopRightNeighbor(gameBoard);
+      Cell topRightNeighbor = currentCell.squareGetTopRightNeighbor(gameBoard);
       if (topRightNeighbor.getDisk() == diskOpponent
-              && topRightNeighbor.getTopRightNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-        if (topRightNeighbor.getTopRightNeighbor(gameBoard).getDisk() == diskCurrent) {
+              && topRightNeighbor.squareGetTopRightNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (topRightNeighbor.squareGetTopRightNeighbor(gameBoard).getDisk() == diskCurrent) {
           return true;
         }
         return topRightLegalMove(topRightNeighbor);
@@ -304,10 +312,10 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
     try {
-      Cell topLeftNeighbor = currentCell.getTopLeftNeighbor(gameBoard);
+      Cell topLeftNeighbor = currentCell.squareGetTopLeftNeighbor(gameBoard);
       if (topLeftNeighbor.getDisk() == diskOpponent
-              && topLeftNeighbor.getTopLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-        if (topLeftNeighbor.getTopLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
+              && topLeftNeighbor.squareGetTopLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (topLeftNeighbor.squareGetTopLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
           return true;
         }
         return topLeftLegalMove(topLeftNeighbor);
@@ -335,10 +343,10 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
     try {
-      Cell rightNeighbor = currentCell.getRightNeighbor(gameBoard);
+      Cell rightNeighbor = currentCell.squareGetRightNeighbor(gameBoard);
       if (rightNeighbor.getDisk() == diskOpponent
-              && rightNeighbor.getRightNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-        if (rightNeighbor.getRightNeighbor(gameBoard).getDisk() == diskCurrent) {
+              && rightNeighbor.squareGetRightNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (rightNeighbor.squareGetRightNeighbor(gameBoard).getDisk() == diskCurrent) {
           return true;
         }
         return rightLegalMove(rightNeighbor);
@@ -366,10 +374,10 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
     try {
-      Cell leftNeighbor = currentCell.getLeftNeighbor(gameBoard);
+      Cell leftNeighbor = currentCell.squareGetLeftNeighbor(gameBoard);
       if (leftNeighbor.getDisk() == diskOpponent
-              && leftNeighbor.getLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
-        if (leftNeighbor.getLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
+              && leftNeighbor.squareGetLeftNeighbor(gameBoard).getDisk() != Disk.EMPTY) {
+        if (leftNeighbor.squareGetLeftNeighbor(gameBoard).getDisk() == diskCurrent) {
           return true;
         }
         return leftLegalMove(leftNeighbor);
@@ -438,7 +446,7 @@ public class SquareReversiModel implements ReversiModel {
   }
 
   /**
-   * Flips the top middle neighboring cells given a cell
+   * Flips the top middle neighboring cells given a cell.
    * @param currentCell given cell
    */
   private void flipTop(Cell currentCell) {
@@ -453,7 +461,7 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
 
-    Cell topNeighbor = currentCell.getTopNeighbor(gameBoard);
+    Cell topNeighbor = currentCell.squareGetTopNeighbor(gameBoard);
     if (topNeighbor.getDisk() == diskOpponent) {
       topNeighbor.setDisk(diskCurrent);
       flipTop(topNeighbor);
@@ -476,7 +484,7 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
 
-    Cell bottomNeighbor = currentCell.getBottomNeighbor(gameBoard);
+    Cell bottomNeighbor = currentCell.squareGetBottomNeighbor(gameBoard);
     if (bottomNeighbor.getDisk() == diskOpponent) {
       bottomNeighbor.setDisk(diskCurrent);
       flipBottom(bottomNeighbor);
@@ -499,7 +507,7 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
 
-    Cell topLeftNeighbor = currentCell.getTopLeftNeighbor(gameBoard);
+    Cell topLeftNeighbor = currentCell.squareGetTopLeftNeighbor(gameBoard);
     if (topLeftNeighbor.getDisk() == diskOpponent) {
       topLeftNeighbor.setDisk(diskCurrent);
       flipTopLeft(topLeftNeighbor);
@@ -522,7 +530,7 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
 
-    Cell topRightNeighbor = currentCell.getTopRightNeighbor(gameBoard);
+    Cell topRightNeighbor = currentCell.squareGetTopRightNeighbor(gameBoard);
     if (topRightNeighbor.getDisk() == diskOpponent) {
       topRightNeighbor.setDisk(diskCurrent);
       flipTopRight(topRightNeighbor);
@@ -545,7 +553,7 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
 
-    Cell rightNeighbor = currentCell.getRightNeighbor(gameBoard);
+    Cell rightNeighbor = currentCell.squareGetRightNeighbor(gameBoard);
     if (rightNeighbor.getDisk() == diskOpponent) {
       rightNeighbor.setDisk(diskCurrent);
       flipRight(rightNeighbor);
@@ -568,7 +576,7 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
 
-    Cell leftNeighbor = currentCell.getLeftNeighbor(gameBoard);
+    Cell leftNeighbor = currentCell.squareGetLeftNeighbor(gameBoard);
     if (leftNeighbor.getDisk() == diskOpponent) {
       leftNeighbor.setDisk(diskCurrent);
       flipLeft(leftNeighbor);
@@ -591,7 +599,7 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
 
-    Cell bottomRightNeighbor = currentCell.getBottomRightNeighbor(gameBoard);
+    Cell bottomRightNeighbor = currentCell.squareGetBottomRightNeighbor(gameBoard);
     if (bottomRightNeighbor.getDisk() == diskOpponent) {
       bottomRightNeighbor.setDisk(diskCurrent);
       flipBottomRight(bottomRightNeighbor);
@@ -614,7 +622,7 @@ public class SquareReversiModel implements ReversiModel {
       diskOpponent = Disk.BLACK;
     }
 
-    Cell bottomLeftNeighbor = currentCell.getBottomLeftNeighbor(gameBoard);
+    Cell bottomLeftNeighbor = currentCell.squareGetBottomLeftNeighbor(gameBoard);
     if (bottomLeftNeighbor.getDisk() == diskOpponent) {
       bottomLeftNeighbor.setDisk(diskCurrent);
       flipBottomLeft(bottomLeftNeighbor);

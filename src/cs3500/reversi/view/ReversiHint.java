@@ -1,6 +1,8 @@
 package cs3500.reversi.view;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.geom.Point2D;
 
 import cs3500.reversi.model.Cell;
@@ -8,10 +10,17 @@ import cs3500.reversi.model.CellCoordinate;
 import cs3500.reversi.model.Disk;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 
+/**
+ * Class representing the hint functionality for the view.
+ */
 public class ReversiHint extends ReversiPanel implements ReversiView {
   private boolean hintsEnabled;
   private ReadOnlyReversiModel model;
 
+  /**
+   * Constructs a reversi hint.
+   * @param model the given model.
+   */
   public ReversiHint(ReadOnlyReversiModel model) {
     super(model);
     this.model = model;

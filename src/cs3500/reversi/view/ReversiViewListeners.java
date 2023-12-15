@@ -17,7 +17,7 @@ public class ReversiViewListeners implements ViewListeners {
 
   /**
    * adds viewFeatures to the features list field.
-   * @param features
+   * @param features the view features to be added to the list.
    */
   @Override
   public void addViewListerners(ViewFeatures features) {

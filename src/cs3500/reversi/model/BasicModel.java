@@ -421,7 +421,8 @@ public class BasicModel implements ReversiModel, ModelFeatures {
     CellCoordinate coordinate = currentCell.getCoord();
 
     try {
-      Cell neighbor = getCell(new CellCoordinate(coordinate.getQ() + dirQ, coordinate.getR() + dirR));
+      Cell neighbor = getCell(new CellCoordinate(coordinate.getQ() + dirQ,
+              coordinate.getR() + dirR));
       Disk currentDisk = isBlacksTurn ? Disk.BLACK : Disk.WHITE;
       Disk opponentDisk = isBlacksTurn ? Disk.WHITE : Disk.BLACK;
       while (neighbor != null && neighbor.getDisk() == opponentDisk) {

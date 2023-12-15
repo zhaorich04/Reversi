@@ -3,6 +3,9 @@ package cs3500.reversi.view;
 import cs3500.reversi.model.CellCoordinate;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 
+/**
+ * Class representing a textual view for a square reversi game.
+ */
 public class SquareReversiTextualView {
   private final ReadOnlyReversiModel m;
 
@@ -39,7 +42,6 @@ public class SquareReversiTextualView {
    * @return the cell represented as a string
    */
   private String makeCell(int q, int r) {
-//    System.out.println(m.getCell(new CellCoordinate(q, r)));
     System.out.println(m.getCell(new CellCoordinate(1,6)));
     return m.getCell(new CellCoordinate(q, r)).toString();
   }
